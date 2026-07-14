@@ -1,11 +1,9 @@
 import { expect } from "chai";
 import { MockDb, Pool, PoolFactory } from "../generated/src/TestHelpers.gen";
-import {
-  LiquidityPoolEntity,
+import type { LiquidityPoolEntity,
   Token,
   StateStoreEntity,
-  LatestETHPriceEntity,
-} from "../generated/src/Types.gen";
+  LatestETHPriceEntity, } from "envio";
 import { divideBase1e18, multiplyBase1e18 } from "../src/Maths";
 import {
   STATE_STORE_ID,

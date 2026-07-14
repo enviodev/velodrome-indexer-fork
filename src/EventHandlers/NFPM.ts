@@ -1,7 +1,4 @@
-import {
-    NFPM,
-    NFPM_Transfer,
-} from "generated";
+import { indexer, NFPM, NFPM_Transfer } from "envio";
 import { set_whitelisted_prices } from "../PriceOracle";
 
 /**
@@ -19,7 +16,9 @@ import { set_whitelisted_prices } from "../PriceOracle";
  * @param {address} to - The address of the new owner of the token.
  * @param {uint256} tokenId - The ID of the token being transferred.
  */
-NFPM.Transfer.handler(async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "NFPM", event: "Transfer" },
+  async ({ event, context }) => {
   const blockDatetime = new Date(event.block.timestamp * 1000);
   const entity: NFPM_Transfer = {
     id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
@@ -39,4 +38,5 @@ NFPM.Transfer.handler(async ({ event, context }) => {
     console.error("Error updating whitelisted prices after position mint:");
     console.error(error);
   }
-});
+}
+);

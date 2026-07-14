@@ -33,3 +33,4 @@ logs
 *.bs.js
 build
 .env
+.envio/

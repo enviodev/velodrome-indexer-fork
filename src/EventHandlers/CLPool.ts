@@ -1,17 +1,8 @@
-import {
-  CLPool,
-  CLPool_Burn,
-  CLPool_Collect,
-  CLPool_CollectFees,
-  CLPool_Flash,
-  CLPool_IncreaseObservationCardinalityNext,
-  CLPool_Initialize,
-  CLPool_Mint,
-  CLPool_SetFeeProtocol,
-  CLPool_Swap
-} from "generated";
+import { indexer, CLPool, CLPool_Burn, CLPool_Collect, CLPool_CollectFees, CLPool_Flash, CLPool_IncreaseObservationCardinalityNext, CLPool_Initialize, CLPool_Mint, CLPool_SetFeeProtocol, CLPool_Swap } from "envio";
 
-CLPool.Burn.handler(async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "CLPool", event: "Burn" },
+  async ({ event, context }) => {
   const entity: CLPool_Burn = {
     id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
     owner: event.params.owner,
@@ -26,9 +17,12 @@ CLPool.Burn.handler(async ({ event, context }) => {
   };
 
   context.CLPool_Burn.set(entity);
-});
+}
+);
 
-CLPool.Collect.handler(async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "CLPool", event: "Collect" },
+  async ({ event, context }) => {
   const entity: CLPool_Collect = {
     id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
     owner: event.params.owner,
@@ -43,9 +37,12 @@ CLPool.Collect.handler(async ({ event, context }) => {
   };
 
   context.CLPool_Collect.set(entity);
-});
+}
+);
 
-CLPool.CollectFees.handler(async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "CLPool", event: "CollectFees" },
+  async ({ event, context }) => {
   const entity: CLPool_CollectFees = {
     id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
     recipient: event.params.recipient,
@@ -57,9 +54,12 @@ CLPool.CollectFees.handler(async ({ event, context }) => {
   };
 
   context.CLPool_CollectFees.set(entity);
-});
+}
+);
 
-CLPool.Flash.handler(async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "CLPool", event: "Flash" },
+  async ({ event, context }) => {
   const entity: CLPool_Flash = {
     id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
     sender: event.params.sender,
@@ -74,9 +74,11 @@ CLPool.Flash.handler(async ({ event, context }) => {
   };
 
   context.CLPool_Flash.set(entity);
-});
+}
+);
 
-CLPool.IncreaseObservationCardinalityNext.handler(
+indexer.onEvent(
+  { contract: "CLPool", event: "IncreaseObservationCardinalityNext" },
   async ({ event, context }) => {
     const entity: CLPool_IncreaseObservationCardinalityNext = {
       id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
@@ -91,7 +93,9 @@ CLPool.IncreaseObservationCardinalityNext.handler(
   }
 );
 
-CLPool.Initialize.handler(async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "CLPool", event: "Initialize" },
+  async ({ event, context }) => {
   const entity: CLPool_Initialize = {
     id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
     sqrtPriceX96: event.params.sqrtPriceX96,
@@ -102,9 +106,12 @@ CLPool.Initialize.handler(async ({ event, context }) => {
   };
 
   context.CLPool_Initialize.set(entity);
-});
+}
+);
 
-CLPool.Mint.handler(async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "CLPool", event: "Mint" },
+  async ({ event, context }) => {
 
   const entity: CLPool_Mint = {
     id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
@@ -122,9 +129,12 @@ CLPool.Mint.handler(async ({ event, context }) => {
   };
 
   context.CLPool_Mint.set(entity);
-});
+}
+);
 
-CLPool.SetFeeProtocol.handler(async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "CLPool", event: "SetFeeProtocol" },
+  async ({ event, context }) => {
   const entity: CLPool_SetFeeProtocol = {
     id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
     feeProtocol0Old: event.params.feeProtocol0Old,
@@ -137,9 +147,12 @@ CLPool.SetFeeProtocol.handler(async ({ event, context }) => {
   };
 
   context.CLPool_SetFeeProtocol.set(entity);
-});
+}
+);
 
-CLPool.Swap.handler(async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "CLPool", event: "Swap" },
+  async ({ event, context }) => {
   const entity: CLPool_Swap = {
     id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
     sender: event.params.sender,
@@ -155,4 +168,5 @@ CLPool.Swap.handler(async ({ event, context }) => {
   };
 
   context.CLPool_Swap.set(entity);
-});
+}
+);

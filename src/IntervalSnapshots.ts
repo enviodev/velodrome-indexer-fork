@@ -1,13 +1,11 @@
-import {
-  LiquidityPoolNew,
+import type { LiquidityPoolNew,
   LiquidityPoolHourlySnapshot,
   LiquidityPoolDailySnapshot,
   LiquidityPoolWeeklySnapshot,
   Token,
   TokenHourlySnapshot,
   TokenDailySnapshot,
-  TokenWeeklySnapshot,
-} from "./src/Types.gen";
+  TokenWeeklySnapshot, } from "envio";
 
 import {
   SECONDS_IN_AN_HOUR,

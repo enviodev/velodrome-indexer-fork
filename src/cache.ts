@@ -17,7 +17,6 @@ export type tokenToPricingPairs = {
 export type ShapeWhiteListedPoolIds = Shape & Record<Address, tokenToPricingPairs>;
 export type ShapePoolToTokens = Shape & Record<Address, { token0: Address, token1: Address }>;
 
-
 type ShapeToken = Shape &
   Record<Address, { decimals: number; name: string; symbol: string }>;
 

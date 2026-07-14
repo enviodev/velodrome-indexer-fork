@@ -6,7 +6,7 @@ import { Cache } from "./cache";
 import { CacheCategory } from "./Constants";
 
 // ERC20 Contract ABI
-const contractABI = require("../abis/ERC20.json");
+import contractABI from "../abis/ERC20.json" with { type: "json" };
 
 // Function to get ERC20 token details
 export async function getErc20TokenDetails(

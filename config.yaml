@@ -1,9 +1,7 @@
 # yaml-language-server: $schema=./node_modules/envio/evm.schema.json
 name: Velodrome_v2
 description: Multi-chain indexer for Velodrome V2 on Optimism and Aerodrome on Base
-unordered_multichain_mode: true
 rollback_on_reorg: false
-event_decoder: hypersync-client
 field_selection:
   transaction_fields:
     - "hash"
@@ -57,7 +55,7 @@ contracts:
     handler: src/EventHandlers/Gauge.ts
     events:
       - event: NotifyReward(address indexed from, uint256 amount)
-networks:
+chains:
   - id: 10 # Optimism
     start_block: 0
     contracts:

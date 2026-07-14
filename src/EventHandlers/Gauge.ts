@@ -1,9 +1,8 @@
-import {
-  Gauge,
-  Gauge_NotifyReward,
-} from "generated";
+import { indexer, Gauge, Gauge_NotifyReward } from "envio";
 
-Gauge.NotifyReward.handler(async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "Gauge", event: "NotifyReward" },
+  async ({ event, context }) => {
   const entity: Gauge_NotifyReward = {
     id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
     from: event.params.from,
@@ -14,4 +13,5 @@ Gauge.NotifyReward.handler(async ({ event, context }) => {
   };
 
   context.Gauge_NotifyReward.set(entity);
-});
+}
+);

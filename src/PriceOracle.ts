@@ -6,7 +6,7 @@ import {
     CHAIN_CONSTANTS,
 } from "./Constants";
 import contractABI from "../abis/VeloPriceOracleABI.json";
-import { Token, TokenPrice } from "./src/Types.gen";
+import type { Token, TokenPrice } from "envio";
 
 let pricesLastUpdated: { [chainId: number]: Date } = {};
 export function setPricesLastUpdated(chainId: number, date: Date) {

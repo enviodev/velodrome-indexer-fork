@@ -1,10 +1,6 @@
-import {
-  Voter,
-  Voter_GaugeCreated,
-  Voter_Voted,
-} from "generated";
+import { indexer, Voter, Voter_GaugeCreated, Voter_Voted } from "envio";
 
-import { LiquidityPoolNew } from "./../src/Types.gen";
+import type { LiquidityPoolNew } from "envio";
 import { normalizeTokenAmountTo1e18 } from "./../Helpers";
 import { CHAIN_CONSTANTS } from "./../Constants";
 import { poolLookupStoreManager } from "./../Store";
@@ -15,7 +11,9 @@ const {
   addRewardAddressDetails,
 } = poolLookupStoreManager();
 
-Voter.Voted.handler(async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "Voter", event: "Voted" },
+  async ({ event, context }) => {
   const entity: Voter_Voted = {
     id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
     sender: event.params.sender,
@@ -28,14 +26,20 @@ Voter.Voted.handler(async ({ event, context }) => {
   };
 
   context.Voter_Voted.set(entity);
-});
+}
+);
 
-Voter.GaugeCreated.contractRegister(({ event, context }) => {
-  context.addVotingReward(event.params.bribeVotingReward);
-  context.addGauge(event.params.gauge);
-});
+indexer.contractRegister(
+  { contract: "Voter", event: "GaugeCreated" },
+  async ({ event, context }) => {
+  context.chain.VotingReward.add(event.params.bribeVotingReward);
+  context.chain.Gauge.add(event.params.gauge);
+}
+);
 
-Voter.GaugeCreated.handler(async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "Voter", event: "GaugeCreated" },
+  async ({ event, context }) => {
   const entity: Voter_GaugeCreated = {
     id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
     poolFactory: event.params.poolFactory,
@@ -62,10 +66,13 @@ Voter.GaugeCreated.handler(async ({ event, context }) => {
   };
 
   addRewardAddressDetails(event.chainId, currentPoolRewardAddressMapping);
-});
+}
+);
 
-Voter.DistributeReward.handlerWithLoader({
-  loader: async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "Voter", event: "DistributeReward" },
+  async ({ event, context }) => {
+    const loaderReturn = await (async ({ event, context }) => {
     let poolAddress = getPoolAddressByGaugeAddress(
       event.chainId,
       event.params.gauge
@@ -92,50 +99,50 @@ Voter.DistributeReward.handlerWithLoader({
       `No pool address found for the gauge address ${event.params.gauge.toString()}`
     );
     return null;
-  },
-  handler: async ({ event, context, loaderReturn }) => {
-    if (loaderReturn) {
-      const { currentLiquidityPool, rewardToken } = loaderReturn;
+  })({ event, context });
 
-      // Dev note: Assumption here is that the GaugeCreated event has already been indexed and the Gauge entity has been created
-      // Dev note: Assumption here is that the reward token (VELO for Optimism and AERO for Base) entity has already been created at this point
-      if (currentLiquidityPool && rewardToken) {
-        let normalizedEmissionsAmount = normalizeTokenAmountTo1e18(
-          event.params.amount,
-          Number(rewardToken.decimals)
-        );
+        if (loaderReturn) {
+          const { currentLiquidityPool, rewardToken } = loaderReturn;
 
-        // If the reward token does not have a price in USD, log
-        if (rewardToken.pricePerUSDNew == 0n) {
-          context.log.warn(
-            `Reward token with ID ${rewardToken.id.toString()} does not have a USD price yet.`
-          );
+          // Dev note: Assumption here is that the GaugeCreated event has already been indexed and the Gauge entity has been created
+          // Dev note: Assumption here is that the reward token (VELO for Optimism and AERO for Base) entity has already been created at this point
+          if (currentLiquidityPool && rewardToken) {
+            let normalizedEmissionsAmount = normalizeTokenAmountTo1e18(
+              event.params.amount,
+              Number(rewardToken.decimals)
+            );
+
+            // If the reward token does not have a price in USD, log
+            if (rewardToken.pricePerUSDNew == 0n) {
+              context.log.warn(
+                `Reward token with ID ${rewardToken.id.toString()} does not have a USD price yet.`
+              );
+            }
+
+            let normalizedEmissionsAmountUsd = multiplyBase1e18(
+              normalizedEmissionsAmount,
+              rewardToken.pricePerUSDNew
+            );
+
+            // Create a new instance of LiquidityPoolEntity to be updated in the DB
+            let newLiquidityPoolInstance: LiquidityPoolNew = {
+              ...currentLiquidityPool,
+              totalEmissions:
+                currentLiquidityPool.totalEmissions + normalizedEmissionsAmount,
+              totalEmissionsUSD:
+                currentLiquidityPool.totalEmissionsUSD +
+                normalizedEmissionsAmountUsd,
+              lastUpdatedTimestamp: new Date(event.block.timestamp * 1000),
+            };
+
+            // Update the LiquidityPoolEntity in the DB
+            context.LiquidityPoolNew.set(newLiquidityPoolInstance);
+          } else {
+            // If there is no pool entity with the particular gauge address, log the error
+            context.log.warn(
+              `No pool entity or reward token found for the gauge address ${event.params.gauge.toString()}`
+            );
+          }
         }
-
-        let normalizedEmissionsAmountUsd = multiplyBase1e18(
-          normalizedEmissionsAmount,
-          rewardToken.pricePerUSDNew
-        );
-
-        // Create a new instance of LiquidityPoolEntity to be updated in the DB
-        let newLiquidityPoolInstance: LiquidityPoolNew = {
-          ...currentLiquidityPool,
-          totalEmissions:
-            currentLiquidityPool.totalEmissions + normalizedEmissionsAmount,
-          totalEmissionsUSD:
-            currentLiquidityPool.totalEmissionsUSD +
-            normalizedEmissionsAmountUsd,
-          lastUpdatedTimestamp: new Date(event.block.timestamp * 1000),
-        };
-
-        // Update the LiquidityPoolEntity in the DB
-        context.LiquidityPoolNew.set(newLiquidityPoolInstance);
-      } else {
-        // If there is no pool entity with the particular gauge address, log the error
-        context.log.warn(
-          `No pool entity or reward token found for the gauge address ${event.params.gauge.toString()}`
-        );
-      }
-    }
-  },
-});
+  }
+);
