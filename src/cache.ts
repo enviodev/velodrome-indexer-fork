@@ -23,7 +23,6 @@ type ShapeToken = Shape &
 export class Cache {
   static init<C = CacheCategory>(
     category: C,
-    chainId: number | string | bigint,
   ) {
     if (!Object.values(CacheCategory).find((c) => c === category)) {
       throw new Error("Unsupported cache category");

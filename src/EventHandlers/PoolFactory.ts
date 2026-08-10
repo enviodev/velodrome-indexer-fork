@@ -116,7 +116,6 @@ indexer.onEvent(
     pool: event.params.pool,
     fee: event.params.fee,
     timestamp: new Date(event.block.timestamp * 1000), // Convert to Date
-    chainId: event.chainId,
   };
 
   context.PoolFactory_SetCustomFee.set(entity);

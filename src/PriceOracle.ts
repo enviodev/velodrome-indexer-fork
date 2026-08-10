@@ -9,7 +9,7 @@ import contractABI from "../abis/VeloPriceOracleABI.json";
 import type { Token, TokenPrice } from "envio";
 
 let pricesLastUpdated: { [chainId: number]: Date } = {};
-export function setPricesLastUpdated(chainId: number, date: Date) {
+export function setPricesLastUpdated(date: Date) {
     pricesLastUpdated[chainId] = date;
 }
 
@@ -36,7 +36,7 @@ export function getPricesLastUpdated(chainId: number): Date | null {
  * @throws {Error} Throws an error if the price fetching process fails or if there
  *                 is an issue with the contract call.
  */
-export async function read_prices(addrs: string[], chainId: number, blockNumber: number): Promise<string[]> {
+export async function read_prices(addrs: string[], blockNumber: number): Promise<string[]> {
     const contractAddress = CHAIN_CONSTANTS[chainId].oracle.getAddress(blockNumber);
     const rpcURL = CHAIN_CONSTANTS[chainId].rpcURL;
     const web3 = new Web3(rpcURL);
@@ -65,7 +65,7 @@ export async function read_prices(addrs: string[], chainId: number, blockNumber:
  *
  * @throws {Error} Throws an error if the price fetching process fails.
  */
-export async function set_whitelisted_prices(chainId: number, blockNumber: number, blockDatetime: Date, context: any): Promise<void> {
+export async function set_whitelisted_prices(blockNumber: number, blockDatetime: Date, context: any): Promise<void> {
     // Skip if not yet available
     let startBlock = CHAIN_CONSTANTS[chainId].oracle.startBlock || Number.MAX_SAFE_INTEGER;
     if (blockNumber < startBlock) return;

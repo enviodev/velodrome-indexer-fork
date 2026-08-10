@@ -9,7 +9,6 @@ indexer.onEvent(
     amount: event.params.amount,
     timestamp: new Date(event.block.timestamp * 1000), // Convert to Date
     sourceAddress: event.srcAddress,
-    chainId: event.chainId,
   };
 
   context.Gauge_NotifyReward.set(entity);

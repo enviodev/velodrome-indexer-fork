@@ -13,7 +13,6 @@ indexer.onEvent(
     amount1: event.params.amount1,
     sourceAddress: event.srcAddress,
     timestamp: new Date(event.block.timestamp * 1000),
-    chainId: event.chainId,
   };
 
   context.CLPool_Burn.set(entity);
@@ -33,7 +32,6 @@ indexer.onEvent(
     amount1: event.params.amount1,
     sourceAddress: event.srcAddress,
     timestamp: new Date(event.block.timestamp * 1000),
-    chainId: event.chainId,
   };
 
   context.CLPool_Collect.set(entity);
@@ -50,7 +48,6 @@ indexer.onEvent(
     amount1: event.params.amount1,
     sourceAddress: event.srcAddress,
     timestamp: new Date(event.block.timestamp * 1000),
-    chainId: event.chainId,
   };
 
   context.CLPool_CollectFees.set(entity);
@@ -70,7 +67,6 @@ indexer.onEvent(
     paid1: event.params.paid1,
     sourceAddress: event.srcAddress,
     timestamp: new Date(event.block.timestamp * 1000),
-    chainId: event.chainId,
   };
 
   context.CLPool_Flash.set(entity);
@@ -86,7 +82,6 @@ indexer.onEvent(
       observationCardinalityNextNew: event.params.observationCardinalityNextNew,
       sourceAddress: event.srcAddress,
       timestamp: new Date(event.block.timestamp * 1000),
-      chainId: event.chainId,
     };
 
     context.CLPool_IncreaseObservationCardinalityNext.set(entity);
@@ -102,7 +97,6 @@ indexer.onEvent(
     tick: event.params.tick,
     sourceAddress: event.srcAddress,
     timestamp: new Date(event.block.timestamp * 1000),
-    chainId: event.chainId,
   };
 
   context.CLPool_Initialize.set(entity);
@@ -125,7 +119,6 @@ indexer.onEvent(
     amount1: event.params.amount1,
     sourceAddress: event.srcAddress,
     timestamp: new Date(event.block.timestamp * 1000),
-    chainId: event.chainId,
   };
 
   context.CLPool_Mint.set(entity);
@@ -143,7 +136,6 @@ indexer.onEvent(
     feeProtocol1New: event.params.feeProtocol1New,
     sourceAddress: event.srcAddress,
     timestamp: new Date(event.block.timestamp * 1000),
-    chainId: event.chainId,
   };
 
   context.CLPool_SetFeeProtocol.set(entity);
@@ -164,7 +156,6 @@ indexer.onEvent(
     tick: event.params.tick,
     sourceAddress: event.srcAddress,
     timestamp: new Date(event.block.timestamp * 1000),
-    chainId: event.chainId,
   };
 
   context.CLPool_Swap.set(entity);

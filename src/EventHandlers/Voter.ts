@@ -22,7 +22,6 @@ indexer.onEvent(
     weight: event.params.weight,
     totalWeight: event.params.totalWeight,
     timestamp: new Date(event.block.timestamp * 1000),
-    chainId: event.chainId,
   };
 
   context.Voter_Voted.set(entity);
@@ -51,7 +50,6 @@ indexer.onEvent(
     gauge: event.params.gauge,
     creator: event.params.creator,
     timestamp: new Date(event.block.timestamp * 1000), // Convert to Date
-    chainId: event.chainId,
   };
 
   context.Voter_GaugeCreated.set(entity);

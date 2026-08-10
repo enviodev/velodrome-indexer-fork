@@ -22,7 +22,6 @@ indexer.onEvent(
     amount1: event.params.amount1,
     sourceAddress: event.srcAddress,
     timestamp: new Date(event.block.timestamp * 1000),
-    chainId: event.chainId,
   };
 
   context.Pool_Mint.set(entity);
@@ -40,7 +39,6 @@ indexer.onEvent(
     amount1: event.params.amount1,
     sourceAddress: event.srcAddress,
     timestamp: new Date(event.block.timestamp * 1000),
-    chainId: event.chainId,
   };
 
   context.Pool_Burn.set(entity);
@@ -161,7 +159,6 @@ indexer.onEvent(
           amount1Out: event.params.amount1Out,
           sourceAddress: event.srcAddress, // Add sourceAddress
           timestamp: new Date(event.block.timestamp * 1000), // Convert to Date
-          chainId: event.chainId,
         };
 
         context.Pool_Swap.set(entity);
@@ -265,7 +262,6 @@ indexer.onEvent(
           reserve1: event.params.reserve1,
           sourceAddress: event.srcAddress,
           timestamp: new Date(event.block.timestamp * 1000), // Convert to Date
-          chainId: event.chainId,
         };
 
         context.Pool_Sync.set(entity);

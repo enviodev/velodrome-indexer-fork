@@ -11,14 +11,13 @@ import contractABI from "../abis/ERC20.json" with { type: "json" };
 // Function to get ERC20 token details
 export async function getErc20TokenDetails(
   contractAddress: string,
-  chainId: number
 ): Promise<{
   readonly name: string;
   readonly decimals: number;
   readonly symbol: string;
 }> {
   console.log(
-    `[getErc20TokenDetails] Starting for address: ${contractAddress}, chainId: ${chainId}`
+    `[getErc20TokenDetails] Starting for address: ${contractAddress}}`
   );
 
   const cache = Cache.init(CacheCategory.Token, chainId);

@@ -35,7 +35,6 @@ export const poolLookupStoreManager = () => {
   };
 
   const addRewardAddressDetails = (
-    chainId: string | number | bigint,
     details: poolRewardAddressMapping
   ) => {
     const { gaugeToPoolCache, bribeVotingToPoolCache } = getCache(chainId);
@@ -52,7 +51,6 @@ export const poolLookupStoreManager = () => {
   };
 
   const getPoolAddressByGaugeAddress = (
-    chainId: string | number | bigint,
     gaugeAddress: string
   ): string | undefined => {
     const { gaugeToPoolCache } = getCache(chainId);
@@ -61,7 +59,6 @@ export const poolLookupStoreManager = () => {
   };
 
   const getPoolAddressByBribeVotingRewardAddress = (
-    chainId: string | number | bigint,
     bribeVotingRewardAddress: string
   ): string | undefined => {
     const { bribeVotingToPoolCache } = getCache(chainId);

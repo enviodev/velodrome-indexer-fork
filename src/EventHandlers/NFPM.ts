@@ -27,7 +27,6 @@ indexer.onEvent(
     to: event.params.to,
     tokenId: event.params.tokenId,
     timestamp: blockDatetime,
-    chainId: event.chainId,
   };
 
   context.NFPM_Transfer.set(entity);

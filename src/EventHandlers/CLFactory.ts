@@ -17,7 +17,6 @@ indexer.onEvent(
     tickSpacing: event.params.tickSpacing,
     pool: event.params.pool,
     timestamp: new Date(event.block.timestamp * 1000), // Convert to Date
-    chainId: event.chainId,
   };
 
   context.CLFactory_PoolCreated.set(entity);
