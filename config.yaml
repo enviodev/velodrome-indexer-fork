@@ -1,5 +1,6 @@
 # yaml-language-server: $schema=./node_modules/envio/evm.schema.json
 name: Velodrome_v2
+disable_default_cross_chain: true # recommended; default in HyperIndex v4
 description: Multi-chain indexer for Velodrome V2 on Optimism and Aerodrome on Base
 rollback_on_reorg: false
 field_selection:
